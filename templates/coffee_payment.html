@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h2 style="text-align: center;">Buy a Hot Coffee</h2>
+<div class="container" style="width: 40%; background-color: darkgray; border-radius: 5px; padding: 20px;">
+    {% crispy form %}
+
+    <br/>
+
+    {% if payment %}
+    <form action="{% url 'payment-status' %}" method="POST">
+        {% csrf_token %}
+        <script src="https://checkout.razorpay.com/v1/checkout.js" 
+            data-key="rzp_test_mMdWScRTlByYZi" 
+            data-amount="{{payment.amount}}"
+            data-currency="{{payment.currency}}"
+            data-order_id="{{payment.id}}" 
+            data-buttontext="Pay with Razorpay" 
+            data-name="Brew Cafe"
+            data-description="Brew Café offers rich, handcrafted coffee, cozy ambiance, and delightful treats—perfect for relaxing, working, or catching up with friends."
+            data-image="https://files.oaiusercontent.com/file-86iEU9YS6ZCyRDEcVJbYjV?se=2025-03-25T07%3A10%3A29Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D85b1833c-937a-4437-87d7-da8b3f3e04b7.webp&sig=/Vczl2V9VZ1xz2%2BH/pbFakPHB7Rt4pNUDh25pfWLHtA%3D" 
+            data-prefill.name="{{payment.name}}"
+            data-prefill.email="brewcoffee@gmail.com" 
+            data-theme.color="#F37254"></script>
+        <input type="hidden" custom="Hidden Element" name="hidden" />
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
